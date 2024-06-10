@@ -1,13 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using Rocky.Data;
+using Microsoft.Extensions.Configuration;
+
+
 namespace Rocky
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                       options.UseSqlServer(
+                             builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
