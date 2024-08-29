@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Microsoft.Extensions.Configuration;
 
+// с 30 го урока    
 
 namespace Rocky
 {
