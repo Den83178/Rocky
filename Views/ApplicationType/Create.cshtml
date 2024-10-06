@@ -1,0 +1,50 @@
+﻿@model Rocky.Models.ApplicationType
+
+<form method="post" asp-action="Create">
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <h2 class="text-info">Application Type Create</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <div class=" row">
+
+                    <div class="col-4 p-1">
+                        <label asp-for="Id">Id</label>
+                    </div>
+                    <div class="col-8 p-1">
+                        <input asp-for="Id" disabled class="form-control"/>
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-4 p-1">
+                        <label asp-for="Name">Name</label>
+                    </div>
+                    <div class="col-8 p-1">
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-8 p-3">
+            <div class="col-8 offset-4 row">
+                <div class="col">
+                    <input type="submit" asp-controller="ApplicationType" asp-action="Create" class="btn btn-success w-100" value="Create" />
+                </div>
+                <div class="col">
+                    <a asp-action="index" class="btn btn-info w-100">Back</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts{
+    @{<partial name="_ValidationScriptsPartial" />}
+}
