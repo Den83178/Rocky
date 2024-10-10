@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Rocky.Data;
 using Rocky.Models;
+using Rocky.Models.ViewModels;
 
 namespace Rocky.Controllers
 {
@@ -19,7 +20,7 @@ namespace Rocky.Controllers
 
             foreach (var ob_cat in ob_prod)
             {
-                ob_cat.Category = _db.Category.FirstOrDefault(u => u.Id==ob_cat.CategoryId);
+                ob_cat.Category = _db.Category.FirstOrDefault(u => u.Id == ob_cat.CategoryId);
             }
             return View(ob_prod);
         }
@@ -27,30 +28,40 @@ namespace Rocky.Controllers
         //GET - UPSERT
         public IActionResult Upsert(int? id)
         {
-            IEnumerable<SelectListItem> CategoryDropDown = _db.Category.Select(i => new SelectListItem
-            {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
+            //IEnumerable<SelectListItem> CategoryDropDown = _db.Category.Select(i => new SelectListItem
+            //{
+            //    Text = i.Name,
+            //    Value = i.Id.ToString()
+            //});
 
             //ViewBag.CategoryDropDown = CategoryDropDown;
-            ViewData["CategoryDropDown"] = CategoryDropDown;
+            //ViewData["CategoryDropDown"] = CategoryDropDown;
 
-            Product product = new Product();
+
+            ProductVM productVM = new ProductVM()
+            {
+                Product = new Product(),
+                CategorySelectList = _db.Category.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+            };
+
             if (id == null)
             {
                 // this is for create
-                return View(product);
+                return View(productVM);
             }
             else
             {
-                product = _db.Product.Find(id);
+                productVM.Product = _db.Product.Find(id);
 
-                if (product == null)
+                if (productVM == null)
                 {
                     return NotFound();
                 }
-                return View(product);
+                return View(productVM);
             }
         }
     }
