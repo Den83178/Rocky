@@ -5,12 +5,12 @@
 }
 <style>
     div {
-        padding: 3px;
+    padding: 3px;
     }
 </style>
 
 <form method="post" enctype="multipart/form-data">
-    @if ( Model.Id != 0)
+    @if (Model.Id != 0)
     {
         title = "Edit Product";
         <input asp-for="Id" hidden />
@@ -66,7 +66,7 @@
                         <label asp-for="CategoryId"></label>
                     </div>
                     <div class="col-8">
-                        <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control">
+                        <select asp-for="CategoryId" asp-items="@ViewData["CategoryDropDown"] as IEnumerable<SelectListItem>" class="form-control">
                             <option disabled selected>--Select Category--</option>
                         </select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
