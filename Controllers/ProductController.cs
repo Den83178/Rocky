@@ -10,9 +10,12 @@ namespace Rocky.Controllers
     {
         private readonly ApplicationDbContext _db;
 
-        public ProductController(ApplicationDbContext prod)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public ProductController(ApplicationDbContext prod, IWebHostEnvironment webHostEnvironment)
         {
             _db = prod;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -37,6 +40,8 @@ namespace Rocky.Controllers
             //ViewBag.CategoryDropDown = CategoryDropDown;
             //ViewData["CategoryDropDown"] = CategoryDropDown;
 
+            //Product product = new Product();
+
 
             ProductVM productVM = new ProductVM()
             {
@@ -57,12 +62,44 @@ namespace Rocky.Controllers
             {
                 productVM.Product = _db.Product.Find(id);
 
-                if (productVM == null)
+                if (productVM.Product == null)
                 {
                     return NotFound();
                 }
                 return View(productVM);
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(ProductVM productVM)
+        {
+            var files = HttpContext.Request.Form.Files;
+            string webRootPath = _webHostEnvironment.WebRootPath;
+
+            if (productVM.Product.Id == 0)
+            {
+                // Creating
+                string upload = webRootPath + WC.ImagePath;
+                string fileName = Guid.NewGuid().ToString();
+                string extension = Path.GetExtension(files[0].FileName);
+
+                using (var fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
+                {
+                    files[0].CopyTo(fileStream);
+                }
+
+                productVM.Product.Image = fileName + extension;
+
+                _db.Product.Add(productVM.Product);
+            }
+            else 
+            {
+               // updating
+            }
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+            
         }
     }
 }
