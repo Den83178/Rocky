@@ -78,12 +78,12 @@
                         <div class="col">
                             @if (Model.Product.Id != 0)
                             {
-                                // Update
+                // Update
                                 <input type="submit" value="Update" class="btn btn-success w-100" />
                             }
                             else
                             {
-                                 // Create
+                // Create
                                 <input type="submit" onclick="return validateInput()" value="Create" class="btn btn-primary w-100" />
                             }
 
@@ -97,10 +97,13 @@
                 </div>
 
             </div>
-                <div class="col-4 ">
-                    @* Keep this empty *@
-                <img src="@WC.ImagePath@Model.Product.Image" width="100%" style="border-radius:5px; border:1px solid #bbb" alt="" />
-                </div>
+            <div class="col-4 ">
+                @* Keep this empty *@
+                @if (Model.Product.Id != 0)
+                {
+                    <img src="@WC.ImagePath@Model.Product.Image" width="100%" style="border-radius:5px; border:1px solid #bbb" alt="" />
+                }
+            </div>
         </div>
 
     </div>
