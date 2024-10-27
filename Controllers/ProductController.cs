@@ -146,5 +146,33 @@ namespace Rocky.Controllers
             return View(productVM);
             //return View();
         }
+
+        //GET - DELETE
+        public IActionResult Delete(int id)
+        {
+            var del_obj = _db.Product.Find(id);
+
+            if (del_obj == null)
+            {
+                return NotFound();
+            }
+            return View(del_obj);
+        }
+
+        //POST - DELETE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete_Post(int id)
+        {
+            var del_obj = _db.Product.Find(id);
+
+            if (del_obj == null )
+            { 
+                return NotFound();
+            }  
+             _db.Remove(del_obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
