@@ -75,6 +75,8 @@ namespace Rocky.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(ProductVM productVM, Product product)
         {
+            //ProductVM product = productVM;
+
             if (ModelState.IsValid)
             {
 
@@ -120,6 +122,8 @@ namespace Rocky.Controllers
                             files[0].CopyTo(fileStream);
                         }
                         productVM.Product.Image = fileName + extension;
+
+
                     }
 
                     else
@@ -131,12 +135,16 @@ namespace Rocky.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+
+
             productVM.CategorySelectList = _db.Category.Select(i => new SelectListItem
             {
                 Text = i.Name,
                 Value = i.Id.ToString()
             });
-             return View(productVM);
+            return View(productVM);
+            //return View();
         }
     }
 }
