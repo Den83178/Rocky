@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Rocky.Models;
 using Rocky.Models.ViewModels;
+using System.IO;
 
 namespace Rocky.Controllers
 {
@@ -20,12 +21,14 @@ namespace Rocky.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> ob_prod = _db.Product;
+            IEnumerable<Product> ob_prod = _db.Product.Include(u => u.Category).Include(u => u.ApplicationType);
 
-            foreach (var ob_cat in ob_prod)
-            {
-                ob_cat.Category = _db.Category.FirstOrDefault(u => u.Id == ob_cat.CategoryId);
-            }
+            //foreach (var ob_cat in ob_prod)
+            //{
+            //    ob_cat.Category = _db.Category.FirstOrDefault(u => u.Id == ob_cat.CategoryId);
+
+            //    ob_cat.ApplicationType = _db.ApplicationType.FirstOrDefault(u => u.Id == ob_cat.ApplicationTypeId);
+            //}
             return View(ob_prod);
         }
 
@@ -51,8 +54,17 @@ namespace Rocky.Controllers
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
+                }),
+
+                ApplicationTypeSelectList = _db.ApplicationType.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
                 })
             };
+
+
+
 
             if (id == null)
             {
@@ -143,6 +155,13 @@ namespace Rocky.Controllers
                 Text = i.Name,
                 Value = i.Id.ToString()
             });
+
+            productVM.ApplicationTypeSelectList = _db.ApplicationType.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+
             return View(productVM);
             //return View();
         }
@@ -150,7 +169,7 @@ namespace Rocky.Controllers
         //GET - DELETE
         public IActionResult Delete(int id)
         {
-            var del_obj = _db.Product.Find(id);
+            var del_obj = _db.Product.Include(u => u.ApplicationType).Include(u => u.Category).FirstOrDefault(u => u.Id == id);
 
             if (del_obj == null)
             {
@@ -160,17 +179,26 @@ namespace Rocky.Controllers
         }
 
         //POST - DELETE
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult Delete_Post(int id)
         {
             var del_obj = _db.Product.Find(id);
 
-            if (del_obj == null )
-            { 
+            if (del_obj == null)
+            {
                 return NotFound();
-            }  
-             _db.Remove(del_obj);
+            }
+            string upload = _webHostEnvironment.WebRootPath + WC.ImagePath;
+
+            var del_file = Path.Combine(upload, del_obj.Image);
+
+            if (System.IO.File.Exists(del_file))
+            {
+                System.IO.File.Delete(del_file);
+            }
+
+            _db.Product.Remove(del_obj);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
