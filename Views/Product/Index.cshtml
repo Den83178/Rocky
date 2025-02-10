@@ -32,7 +32,9 @@
                     <th>
                         ApplicationType
                     </th>
-                    <th></th>
+                    <th class="text-center">
+                        Edit / Delete
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +46,7 @@
                         <td width="20%">@obj.Category.Name</td>
                         <td width="20%">@obj.ApplicationType.Name</td>
                         <td class=" text-center">
-                            <div class="btn-group w-75" role="group">
+                            <div class="btn-group w-85" role="group">
                                 <a asp-route-id="@obj.Id" asp-action="Upsert" class="btn btn-primary mx-1">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>
