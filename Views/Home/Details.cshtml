@@ -1,7 +1,7 @@
 ﻿@model Rocky.Models.ViewModels.DetailsVM
 
 <div class="">
-    <form method="post">
+    <form method="post" asp-action="Details">
         <input asp-for="@Model.Product.Id" hidden />
         <div class="container backgroundWhite pt-4">
             <div class="card" style="border:1px solid #000000; ">
