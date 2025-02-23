@@ -3,7 +3,7 @@ using Rocky.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 
-// с 30 го урока    
+// пїЅ 30 пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ    
 
 namespace Rocky
 {
@@ -52,6 +52,7 @@ namespace Rocky
             app.UseAuthorization();
             app.UseSession();
 
+            app.MapRazorPages();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -61,3 +62,11 @@ namespace Rocky
     }
 }
 //62
+
+//            app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapRazorPages();
+//    endpoints.MapControllerRoute(
+//        name: "default",
+//        pattern: "{controller=Home}/{action=Index}/{id?}");
+//});
