@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Rocky.Data;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 // с 30 го урока    
 
@@ -20,6 +21,9 @@ namespace Rocky
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                        options.UseSqlServer(
                              builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddSession(options =>
@@ -44,6 +48,7 @@ namespace Rocky
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
 

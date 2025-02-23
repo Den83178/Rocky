@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;                           //  NuGet don't change
 using Rocky.Models;
 
 namespace Rocky.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext: IdentityDbContext                                                                        //DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options):
             base(options)
@@ -18,3 +19,4 @@ namespace Rocky.Data
         public DbSet<Product> Product { get; set; }
     }
 }
+// using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
