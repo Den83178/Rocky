@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Rocky.Models;
 
 namespace Rocky.Areas.Identity.Pages.Account
 {
@@ -97,6 +98,10 @@ namespace Rocky.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public string FullName { get; set; }
+
+            public string PhoneNumber { get; set; }
         }
 
 
@@ -113,6 +118,11 @@ namespace Rocky.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+               
+
+                await _userStore.SetUserNameAsync(user, Input.FullName, CancellationToken.None);            //Added
+                await _userStore.SetUserNameAsync(user, Input.PhoneNumber, CancellationToken.None);      //Added
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -154,11 +164,11 @@ namespace Rocky.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private IdentityUser CreateUser()                                       // IdentityUser
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();            //<IdentityUser> was changed
             }
             catch
             {
