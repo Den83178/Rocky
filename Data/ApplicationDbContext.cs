@@ -4,19 +4,21 @@ using Rocky.Models;
 
 namespace Rocky.Data
 {
-    public class ApplicationDbContext: IdentityDbContext                                                                        //DbContext
+    public class ApplicationDbContext : IdentityDbContext                                                                        //DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext>options):
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :
             base(options)
         {
-            
+
         }
 
-       public DbSet<Category>Category { get; set; }
+        public DbSet<Category> Category { get; set; }
 
         public DbSet<ApplicationType> ApplicationType { get; set; }
 
         public DbSet<Product> Product { get; set; }
+
+        public DbSet<ApplicationUser> ApplicationUser {get; set;}
     }
 }
 // using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
