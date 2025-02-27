@@ -14,7 +14,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
             <div class="form-floating mb-3">
-                <input asp-for="Input.FullName" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="Input.FullName" class="form-control"  aria-required="true" placeholder="name@example.com" />
                 <label asp-for="Input.FullName">FullName</label>
                 <span asp-validation-for="Input.FullName" class="text-danger"></span>
             </div>
@@ -27,7 +27,7 @@
 
 
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="Input.PhoneNumber" class="form-control"  aria-required="true" placeholder="name@example.com" />
                 <label asp-for="Input.PhoneNumber">PhoneNumber</label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
@@ -79,4 +79,22 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    @* <script> *@
+    @*     $(".toggle-password").click(function() { *@
+
+    @*   $(this).toggleClass("fa-eye fa-eye-slash"); *@
+    @*   var input = $($(this).attr("toggle")); *@
+    @*   if (input.attr("type") == "password") { *@
+    @*     input.attr("type", "text"); *@
+    @*   } else { *@
+    @*     input.attr("type", "password"); *@
+    @*   } *@
+    @* }); *@
+    @* </script> *@
 }
+
+@* id="password-field" *@
+@* <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span> *@
+
+    @* autocomplete="username" *@

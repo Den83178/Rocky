@@ -110,7 +110,7 @@ namespace Rocky.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if(! await _roleManager.RoleExistsAsync(WC.AdminRole))
+            if (!await _roleManager.RoleExistsAsync(WC.AdminRole))
             {
                 await _roleManager.CreateAsync(new IdentityRole(WC.AdminRole));
                 await _roleManager.CreateAsync(new IdentityRole(WC.CustomerRole));
@@ -126,22 +126,24 @@ namespace Rocky.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-
-
                 var user = CreateUser();
 
-               
-
-                await _userStore.SetUserNameAsync(user, Input.FullName, CancellationToken.None);            //Added
-                await _userStore.SetUserNameAsync(user, Input.PhoneNumber, CancellationToken.None);      //Added
+                await SetFullName(user);        // implementation below addres 205
+                //user = new ApplicationUser {FullName = Input.FullName };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber.ToString());      //Added
+                //await _userStore.SetUserNameAsync(user, Input.FullName, CancellationToken.None);            //Added
+
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
 
+                    await _userManager.AddToRoleAsync(user, WC.AdminRole);
 
                     _logger.LogInformation("User created a new account with password.");
 
@@ -177,7 +179,7 @@ namespace Rocky.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()                                       // IdentityUser
+        private ApplicationUser CreateUser()                                       // IdentityUser
         {
             try
             {
@@ -198,6 +200,13 @@ namespace Rocky.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+
+        private async Task SetFullName(ApplicationUser user)
+        {
+            //user.FullName = Input.FullName;
+            await Task.Run(() => user.FullName = Input.FullName);
+            
         }
     }
 }
