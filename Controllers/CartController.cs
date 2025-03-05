@@ -28,5 +28,25 @@ namespace Rocky.Controllers
 
             return View(prodList);
         }
+
+
+        public IActionResult Remove(int id)
+        {
+            List<ShoppingCart> shoppinigCartList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart) != null && HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart).Count > 0)                                                     // may IEnumerable
+            {
+                //session exists
+                shoppinigCartList = HttpContext.Session.Get<List<ShoppingCart>>(WC.SessionCart);
+            }
+
+            shoppinigCartList.Remove(shoppinigCartList.FirstOrDefault(i => i.ProductId == id));
+
+            //shoppinigCartList.RemoveAt(id);     it doesn't work!!!
+
+            HttpContext.Session.Set<List<ShoppingCart>>(WC.SessionCart, shoppinigCartList);
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
