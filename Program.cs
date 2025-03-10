@@ -22,6 +22,11 @@ namespace Rocky
                        options.UseSqlServer(
                              builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            //builder.Services.Configure<IdentityOptions>(options =>
+            //{
+            //    options.SignIn.RequireConfirmedAccount = false;
+            //});
+
             builder.Services.AddIdentity<IdentityUser,IdentityRole>()
                 .AddDefaultTokenProviders().AddDefaultUI()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

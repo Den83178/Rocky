@@ -2,9 +2,11 @@
 using Rocky.Data;
 using Rocky.Models;
 using Rocky.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rocky.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _db;
